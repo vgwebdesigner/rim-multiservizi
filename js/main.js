@@ -128,10 +128,18 @@ const cookieAccept = document.querySelector("[data-cookie-accept]");
 const cookieReject = document.querySelector("[data-cookie-reject]");
 const cookieSave = document.querySelector("[data-cookie-save]");
 const cookieAnalytics = document.querySelector("[data-cookie-analytics]");
+const cookieManageLinks = document.querySelectorAll("[data-cookie-manage]");
+
+const openCookiePreferences = () => {
+  cookieBanner?.removeAttribute("hidden");
+  cookiePreferences?.removeAttribute("hidden");
+  cookieBanner?.querySelector("[data-cookie-accept], [data-cookie-reject], [data-cookie-save]")?.focus();
+};
 
 const saveCookieChoice = (choice) => {
   localStorage.setItem("rimCookieConsent", JSON.stringify(choice));
   cookieBanner?.setAttribute("hidden", "");
+  cookiePreferences?.setAttribute("hidden", "");
 };
 
 if (cookieBanner && !localStorage.getItem("rimCookieConsent")) {
@@ -155,5 +163,12 @@ cookieSave?.addEventListener("click", () => {
     necessary: true,
     analytics: Boolean(cookieAnalytics?.checked),
     choice: "custom"
+  });
+});
+
+cookieManageLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    openCookiePreferences();
   });
 });
